@@ -1,0 +1,27 @@
+package errors_pages
+
+templ Error404(fromProtected bool) {
+	<section class="flex flex-col items-center justify-center h-[100vh] gap-4">
+		<div class="items-center justify-center flex flex-col gap-4">
+			<h1 class="text-9xl font-extrabold text-[#7237c6] tracking-widest">
+				404
+			</h1>
+		</div>
+		<p class="text-xs text-center md:text-sm text-gray-400">
+			The requested resource could not be found but may be available again in the future.
+		</p>
+		if !fromProtected {
+			<a hx-swap="transition:true" href="/" class="font-semibold">
+				Go Home Page
+			</a>
+		} else {
+			<a
+				hx-swap="transition:true"
+				href="/posts"
+				class="font-semibold"
+			>
+				Go Home Page
+			</a>
+		}
+	</section>
+}

@@ -1,0 +1,14 @@
+package post_views
+
+import (
+	"momez/dto"
+	"momez/views/components"
+)
+
+templ PostUser(posts []*dto.PostDto, isUser bool, username string, canEdit bool, tags []string) {
+	if isUser {
+		@components.UserBanner(username, len(posts), len(tags), canEdit)
+		@components.TagsSelect(tags, canEdit)
+	}
+	@components.Posts(posts, canEdit)
+}

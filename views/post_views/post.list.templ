@@ -1,0 +1,12 @@
+package post_views
+
+import (
+	"momez/dto"
+	"momez/views/components"
+)
+
+templ PostList(posts []*dto.PostDto, canEdit bool) {
+	<h1 class="font-bold text-lg leading-tight tracking-tight">For you</h1>
+	<hr/>
+	@components.Posts(posts, canEdit)
+}

@@ -1,0 +1,17 @@
+package components
+
+import "momez/dto"
+
+templ Posts(posts []*dto.PostDto, canEdit bool) {
+	<div class="w-full flex flex-col items-center" id="posts">
+		for _, post := range posts {
+			@PostCard(*post, canEdit)
+		}
+		if len(posts) == 0 {
+			<div class="w-full flex flex-col justify-center items-center mt-5">
+				<p class="text-gray-500">No posts yet</p>
+				<a class="text-[#7237c6] font-semibold" href="/posts/upload">Create a moment to share</a>
+			</div>
+		}
+	</div>
+}

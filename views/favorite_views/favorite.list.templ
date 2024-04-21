@@ -1,0 +1,12 @@
+package favorite_views
+
+import (
+	"momez/dto"
+	"momez/views/components"
+)
+
+templ FavoriteList(posts []*dto.PostDto, canEdit bool) {
+	<h1 class="font-bold text-lg leading-tight tracking-tight">Favorites</h1>
+	<hr/>
+	@components.Posts(posts, canEdit)
+}

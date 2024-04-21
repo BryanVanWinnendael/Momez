@@ -1,0 +1,33 @@
+package components
+
+templ PostCreateTag(tags []string, selectedTag string) {
+	<select onchange="toggleTagInput()" name="tags" id="tags" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-[#7237c6] focus:border-[#7237c6] block w-full p-2">
+		<option selected>No tag selected</option>
+		for _, tag := range tags {
+			if tag != "" {
+				if tag == selectedTag {
+					<option value={ tag } selected>
+						{ tag }
+					</option>
+				} else {
+					<option value={ tag }>
+						{ tag }
+					</option>
+				}
+			}
+		}
+		<option value="add-new-tag">add a new tag</option>
+	</select>
+	<input placeholder="enter a new tag here" id="new-tag" name="new-tag" type="text" class="hidden w-full border border-gray-300 py-2 pl-3 rounded mt-2 outline-none focus:ring-[#7237c6] :ring-[#7237c6]"/>
+	<script>
+		function toggleTagInput() {
+				var select = document.getElementById("tags");
+				var input = document.getElementById("new-tag");
+				if (select.value === "add-new-tag") {
+						input.style.display = "block";
+				} else {
+						input.style.display = "none";
+				}
+		}
+	</script>
+}

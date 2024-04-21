@@ -1,0 +1,73 @@
+package components
+
+templ PostMore(id string, favorited bool) {
+	<div class="relative" x-data="{ open: false }">
+		<button @click="open = ! open" type="button" class="text-gray-500 group p-4 inline-flex items-center rounded-md bg-white text-base font-medium hover:text-gray-900" aria-expanded="false">
+			<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<rect width="24" height="24" fill="white"></rect>
+				<circle cx="12" cy="7" r="0.5" transform="rotate(90 12 7)" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></circle>
+				<circle cx="12" cy="12" r="0.5" transform="rotate(90 12 12)" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></circle>
+				<circle cx="12" cy="17" r="0.5" transform="rotate(90 12 17)" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></circle>
+			</svg>
+		</button>
+		<div
+			x-show="open"
+			x-transition:enter="transition ease-out duration-200"
+			x-transition:enter-start="opacity-0 scale-90"
+			x-transition:enter-end="opacity-100 scale-100"
+			x-transition:leave="transition ease-in duration-200"
+			x-transition:leave-start="opacity-100 scale-100"
+			x-transition:leave-end="opacity-0 scale-90"
+			class="absolute left-1/2 z-full mt-3 max-w-md -translate-x-1/2 transform px-2 sm:px-0 w-fit"
+		>
+			<div class="overflow-hidden rounded-md shadow-lg ring-1 ring-black ring-opacity-5 w-fit">
+				<div class="relative grid gap-2 bg-white w-fit px-2 py-1">
+					<a href={ templ.URL("/posts/" + id) } class="-m-3 flex gap-2 items-center rounded-lg p-3 hover:bg-gray-50">
+						<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+							<path d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+						</svg>
+						<p class="text-base font-medium text-gray-900">Edit</p>
+					</a>
+					<form
+						hx-post={ "/posts/" + id + "/favorite" }
+						hx-swap="outerHTML"
+						hx-target="#posts"
+					>
+						<button
+							type="submit"
+							class="-m-3 flex gap-2 items-center rounded-lg p-3 hover:bg-gray-50"
+						>
+							<svg
+								class="w-5 h-5"
+								viewBox="0 0 64 64"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path d="M30.051 45.6071L17.851 54.7401C17.2728 55.1729 16.5856 55.4363 15.8662 55.5008C15.1468 55.5652 14.4237 55.4282 13.7778 55.1049C13.1319 54.7817 12.5887 54.2851 12.209 53.6707C11.8293 53.0563 11.6281 52.3483 11.628 51.626V15.306C11.628 13.2423 12.4477 11.2631 13.9069 9.8037C15.3661 8.34432 17.3452 7.52431 19.409 7.52405H45.35C47.4137 7.52431 49.3929 8.34432 50.8521 9.8037C52.3112 11.2631 53.131 13.2423 53.131 15.306V51.625C53.1309 52.3473 52.9297 53.0553 52.55 53.6697C52.1703 54.2841 51.6271 54.7807 50.9812 55.1039C50.3353 55.4272 49.6122 55.5642 48.8928 55.4998C48.1734 55.4353 47.4862 55.1719 46.908 54.739L34.715 45.6071C34.0419 45.1031 33.2238 44.8308 32.383 44.8308C31.5422 44.8308 30.724 45.1031 30.051 45.6071V45.6071Z" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+							</svg>
+							if favorited {
+								<p class="text-base font-medium text-gray-900">Unfavorite</p>
+							} else {
+								<p class="text-base font-medium text-gray-900">Favorite</p>
+							}
+						</button>
+					</form>
+					<form action={ templ.URL("/posts/" + id) } method="delete" hx-swap="transition:true">
+						<button
+							type="submit"
+							class="-m-3 flex gap-2 items-center rounded-lg p-3 hover:bg-gray-50"
+						>
+							<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M4 7H20" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+								<path d="M6 10L7.70141 19.3578C7.87432 20.3088 8.70258 21 9.66915 21H14.3308C15.2974 21 16.1257 20.3087 16.2986 19.3578L18 10" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+								<path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+							</svg>
+							<p class="text-base font-medium text-gray-900">Delete</p>
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+}

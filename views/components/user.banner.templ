@@ -1,0 +1,113 @@
+package components
+
+import (
+	"strconv"
+	"fmt"
+	"net/url"
+	"os"
+)
+
+templ UserBanner(username string, posts int, tags int, canEdit bool) {
+	<div class="w-full h-fit mb-5">
+		<div class="w-full h-fit border-gray-200 bg-white rounded-md backdrop-blur-lg border">
+			if canEdit {
+				<img onclick="selectProfileBanner()" src={ fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media&token=public", os.Getenv("BUCKET_NAME"), url.PathEscape("banner_images/"+username)) } id="banner" class="h-40 w-full bg-[#ededed] rounded-t-md object-cover cursor-pointer"/>
+			} else {
+				<img src={ fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media&token=public", os.Getenv("BUCKET_NAME"), url.PathEscape("banner_images/"+username)) } id="banner" class="h-40 w-full bg-[#ededed] rounded-t-md object-cover"/>
+			}
+			<img id="bannerCopy" class="h-40 w-full bg-[#ededed] rounded-t-md hidden object-cover"/>
+			<div class="flex flex-col gap-2 p-4">
+				if canEdit {
+					<img onclick="selectProfileImage()" src={ fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media&token=public", os.Getenv("BUCKET_NAME"), url.PathEscape("profile_images/"+username)) } alt="default-profile" class="w-20 h-20 rounded-full cursor-pointer -mt-16 object-cover border border-black border-opacity-40"/>
+				} else {
+					<img src={ fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media&token=public", os.Getenv("BUCKET_NAME"), url.PathEscape("profile_images/"+username)) } alt="default-profile" class="w-20 h-20 rounded-full -mt-16 object-cover border border-black border-opacity-40"/>
+				}
+				<div>
+					<h2 class="text-xl font-bold">{ username }</h2>
+					<div class="flex gap-2">
+						<h2 class="text-md font-semibold tracking-tight">{ strconv.Itoa(posts) } posts</h2>
+						<h2 class="text-md font-semibold tracking-tight">{ strconv.Itoa(tags) } tags</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div onclick="closeProfileDiv()" id="showProfileImage" class="fixed z-50 w-screen top-0 h-full hidden justify-center items-center">
+		<div class="bg-white rounded-lg shadow-lg m-8 w-full h-96 max-w-[500px] pb-3 flex-col items-center justify-center">
+			<form class="flex flex-col gap-4 justify-center items-center h-full w-full" enctype="multipart/form-data" action={ templ.URL("/users/" + username + "/profile-image") } method="post" hx-swap="transition:true">
+				<img id="imageUploaderBox" alt="loading" class="w-32 h-32 rounded-full object-cover border border-black border-opacity-40"/>
+				<input onchange="handleChangeProfileImage(event)" accept="image/png, image/jpeg" type="file" class="hidden" name="profile_image"/>
+				<p class="text-md">Save image as new profile image?</p>
+				<div class="flex gap-2">
+					<button class="border-[1px] border-[#7237c6] rounded-md w-full px-3 py-1 text-black" onclick="closeProfileDiv()" type="button">Cancel</button>
+					<button class="bg-[#7237c6] rounded-md w-full px-3 py-1 text-white" type="submit">Save</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div onclick="closeBannerDiv()" id="showBannerImage" class="fixed z-50 w-screen top-0 h-full hidden justify-center items-center">
+		<div class="bg-white rounded-lg shadow-lg m-8 w-full h-40 max-w-[500px] pb-3 flex-col items-center justify-center">
+			<form class="flex flex-col gap-4 justify-center items-center h-full w-full" enctype="multipart/form-data" action={ templ.URL("/users/" + username + "/banner-image") } method="post" hx-swap="transition:true">
+				<input onchange="handleChangeProfileBanner(event)" accept="image/png, image/jpeg" type="file" class="hidden" name="banner_image"/>
+				<p class="text-md">Save image as new banner image?</p>
+				<div class="flex gap-2">
+					<button class="border-[1px] border-[#7237c6] rounded-md w-full px-3 py-1 text-black" onclick="closeBannerDiv()" type="button">Cancel</button>
+					<button class="bg-[#7237c6] rounded-md w-full px-3 py-1 text-white" type="submit">Save</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script>
+		function selectProfileImage() {
+			document.querySelector('input[name="profile_image"]').click()
+		}
+
+		function selectProfileBanner() {
+			document.querySelector('input[name="banner_image"]').click()
+		}
+
+		function handleChangeProfileImage(e) {
+			const file = e.target.files[0]
+			const reader = new FileReader()
+			reader.onload = (e) => {
+				const div =  document.getElementById('showProfileImage')
+				div.style.display = 'flex'
+				const img =  document.getElementById('imageUploaderBox')
+				img.src = e.target.result
+			}
+			reader.readAsDataURL(file)
+		}
+
+		function handleChangeProfileBanner(e) {
+			const file = e.target.files[0]
+			const reader = new FileReader()
+			reader.onload = (e) => {
+				const div =  document.getElementById('showBannerImage')
+				div.style.display = 'flex'
+				const banner =  document.getElementById('bannerCopy')
+				banner.src = e.target.result
+
+				const bannerOriginal =  document.getElementById('banner')
+				bannerOriginal.style.display = 'none'
+
+				const bannerCopy =  document.getElementById('bannerCopy')
+				bannerCopy.style.display = 'block'
+			}
+			reader.readAsDataURL(file)
+		}
+
+		function closeProfileDiv() {
+			document.getElementById('showProfileImage').style.display = 'none'
+		}
+
+		function closeBannerDiv() {
+			document.getElementById('showBannerImage').style.display = 'none'
+
+			const bannerOriginal =  document.getElementById('banner')
+			bannerOriginal.style.display = 'block'
+
+			const bannerCopy =  document.getElementById('bannerCopy')
+			bannerCopy.style.display = 'none'
+		}
+	</script>
+}

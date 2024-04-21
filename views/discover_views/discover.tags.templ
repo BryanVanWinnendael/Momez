@@ -1,0 +1,16 @@
+package discover_views
+
+script onClickTag(tag string) {
+	const input = document.getElementById('discover-search')
+  input.value = tag
+  const event = new Event('input')
+  input.dispatchEvent(event)
+}
+
+templ DiscoverTags(tags []string) {
+	<div class="flex gap-2">
+		for _, tag := range tags {
+			<span onClick={ onClickTag(tag) } class="cursor-pointer text-sm font-medium bg-[#7237c645] py-1 px-2 rounded-md text-[#7237c6] align-middle">{ tag }</span>
+		}
+	</div>
+}

@@ -1,0 +1,16 @@
+package post_views
+
+import (
+	"momez/dto"
+	"momez/views/components"
+)
+
+templ EditPost(post *dto.PostDto, tags []string) {
+	<h1 class="font-bold text-lg leading-tight tracking-tight">Edit Post</h1>
+	<hr/>
+	<div class="w-full h-fit flex flex-col items-center pt-12">
+		<div class="w-full h-full flex justify-center items-center">
+			@components.EditPost(post, tags)
+		</div>
+	</div>
+}

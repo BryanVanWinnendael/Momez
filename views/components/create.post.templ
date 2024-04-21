@@ -1,0 +1,38 @@
+package components
+
+templ CreatePost(tags []string) {
+	<form action="" method="post" hx-swap="transition:true" class="flex flex-col gap-2 justify-center items-center bg-white rounded-2xl shadow-lg w-full h-full max-w-[500px]" enctype="multipart/form-data">
+		<input accept="image/png, image/jpeg" id="file" name="file" type="file" class="rounded-md hidden" onchange="handleFileUpload(event)"/>
+		<div class="max-w-[500px] w-full min-h-60 object-cover cursor-pointer flex justify-center items-center mt-8" onclick="openFileUploader()">
+			<img class="w-12 h-12" src="/static/img/add.svg" id="imageUploaderBox"/>
+		</div>
+		<div class="px-8 w-full flex flex-col gap-2 mt-2 mb-5">
+			<input placeholder="type caption here" id="caption" name="caption" type="text" class="w-full border border-gray-300 py-2 pl-3 rounded mt-2 outline-none focus:ring-[#7237c6] :ring-[#7237c6]"/>
+			@PostCreateTag(tags, "No tag selected")
+			<button
+				type="submit"
+				class="bg-[#7237c6] rounded-md w-full px-3 py-2 text-white"
+			>
+				Post
+			</button>
+		</div>
+	</form>
+	<script>
+		function openFileUploader() {
+			document.getElementById('file').click()
+		}
+
+		function handleFileUpload(event) {
+			const file = event.target.files[0];
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				const imageUrl = e.target.result;
+				const uploaderBox = document.getElementById('imageUploaderBox')
+				uploaderBox.src = imageUrl
+				uploaderBox.style.width = '100%'
+				uploaderBox.style.height = '100%'
+			}
+			reader.readAsDataURL(file);
+		}
+	</script>
+}

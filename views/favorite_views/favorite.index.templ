@@ -1,0 +1,18 @@
+package favorite_views
+
+import (
+	"momez/views/layout"
+)
+
+templ FavoriteIndex(
+	title,
+	username string,
+	fromProtected bool,
+	isError bool,
+	errMsgs, sucMsgs []string,
+	cmp templ.Component,
+) {
+	@layout.Base(title, username, fromProtected, isError, errMsgs, sucMsgs) {
+		@cmp
+	}
+}

@@ -1,0 +1,26 @@
+package components
+
+import (
+	"momez/dto"
+)
+
+templ EditPost(post *dto.PostDto, tags []string) {
+	<div class="bg-white rounded-2xl shadow-lg w-full h-full max-w-[500px] flex flex-col">
+		<form action="" method="post" hx-swap="transition:true" class="flex flex-col justify-center items-center" enctype="multipart/form-data">
+			<input type="hidden" name="id" value={ post.ID }/>
+			<div class="max-w-[500px] w-full min-h-60 object-cover flex justify-center items-center mt-8">
+				<img class="w-full h-full" src={ post.URL }/>
+			</div>
+			<div class="px-8 w-full flex flex-col gap-2 mt-2">
+				<input value={ post.Caption } id="caption" name="caption" type="text" class="w-full border border-gray-300 py-2 pl-3 rounded mt-2 outline-none focus:ring-[#7237c6] :ring-[#7237c6]"/>
+				@PostCreateTag(tags, post.TAG)
+				<button
+					type="submit"
+					class="bg-[#7237c6] rounded-md w-full px-3 py-2 text-white mb-5"
+				>
+					Edit Post
+				</button>
+			</div>
+		</form>
+	</div>
+}

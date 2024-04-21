@@ -1,0 +1,38 @@
+package errors_pages
+
+import "momez/views/layout"
+
+templ Error401(fromProtected bool) {
+	<section class="flex flex-col items-center justify-center h-[100vh] gap-4">
+		<div class="items-center justify-center flex flex-col gap-4">
+			<h1 class="text-9xl font-extrabold text-[#7237c6] tracking-widest">
+				401
+			</h1>
+		</div>
+		<p class="text-xs text-center md:text-sm text-gray-400">
+			Please provide valid credentials.
+		</p>
+		<a hx-swap="transition:true" href="/login" class="font-semibold">
+			Go Login Page
+		</a>
+	</section>
+}
+
+templ ErrorIndex(
+	title,
+	username string,
+	fromProtected bool,
+	isError bool,
+	cmp templ.Component,
+) {
+	@layout.Base(
+		title,
+		username,
+		fromProtected,
+		isError,
+		[]string{},
+		[]string{},
+	) {
+		@cmp
+	}
+}

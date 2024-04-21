@@ -1,0 +1,80 @@
+package partials
+
+import (
+	"fmt"
+	"os"
+	"net/url"
+)
+
+func isActive(title string, current string) bool {
+	if title == current {
+		return true
+	}
+	return false
+}
+
+templ Navbar(title string, username string) {
+	<nav
+		class="flex w-20 shrink-0 z-10 grow-0 justify-between border-gray-200 bg-white p-2.5 backdrop-blur-lg h-full min-w-[64px] flex-col border"
+	>
+		<div class="flex flex-col gap-2">
+			<a
+				href="/posts"
+				class="flex aspect-square min-h-[32px] w-12 flex-col items-center justify-center gap-1 rounded-md p-1.5 "
+			>
+				<svg class={ "w-6 h-6 ", templ.KV("fill-black", isActive(title, "| Home")) } viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M6.49996 7C7.96131 5.53865 9.5935 4.41899 10.6975 3.74088C11.5021 3.24665 12.4978 3.24665 13.3024 3.74088C14.4064 4.41899 16.0386 5.53865 17.5 7C20.6683 10.1684 20.5 12 20.5 15C20.5 16.4098 20.3895 17.5988 20.2725 18.4632C20.1493 19.3726 19.3561 20 18.4384 20H17C15.8954 20 15 19.1046 15 18V16C15 15.2043 14.6839 14.4413 14.1213 13.8787C13.5587 13.3161 12.7956 13 12 13C11.2043 13 10.4413 13.3161 9.87864 13.8787C9.31603 14.4413 8.99996 15.2043 8.99996 16V18C8.99996 19.1046 8.10453 20 6.99996 20H5.56152C4.64378 20 3.85061 19.3726 3.72745 18.4631C3.61039 17.5988 3.49997 16.4098 3.49997 15C3.49997 12 3.33157 10.1684 6.49996 7Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+				</svg>
+			</a>
+			<a
+				href="/discover"
+				class="flex aspect-square min-h-[32px] w-12 flex-col items-center justify-center gap-1 rounded-md p-1.5 stroke-black"
+			>
+				<svg class={ "w-6 h-6 ", templ.KV("stroke-[2.5px]", isActive(title, "| Discover")), templ.KV("stroke-[1.5]", !isActive(title, "| Discover")) } viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"></path>
+				</svg>
+			</a>
+			<a
+				href="/posts/upload"
+				class="flex aspect-square min-h-[32px] w-12 flex-col items-center justify-center gap-1 rounded-md p-1.5 stroke-black"
+			>
+				<svg class={ "w-5 h-5 ", templ.KV("fill-black", isActive(title, "| Create Post")), templ.KV("fill-none", !isActive(title, "| Create Post")) } viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<circle cx="12" cy="12" r="10" stroke="#000000" stroke-width="1.5"></circle>
+					<path class={ templ.KV("fill-white", isActive(title, "| Create Post")), templ.KV("fill-black", !isActive(title, "| Create Post")) } fill-rule="evenodd" clip-rule="evenodd" d="M13.0001 7C13.0001 6.44771 12.5524 6 12.0001 6C11.4479 6 11.0001 6.44771 11.0001 7V11H7C6.44771 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11.0001V17C11.0001 17.5523 11.4479 18 12.0001 18C12.5524 18 13.0001 17.5523 13.0001 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13.0001V7Z"></path>
+				</svg>
+			</a>
+			<a
+				href="/favorites"
+				class="flex aspect-square min-h-[32px] w-12 flex-col items-center justify-center gap-1 rounded-md p-1.5 stroke-black"
+			>
+				<svg
+					class={ "w-6 h-6", templ.KV("fill-black", isActive(title, "| Favorites")) }
+					viewBox="0 0 64 64"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<path d="M30.051 45.6071L17.851 54.7401C17.2728 55.1729 16.5856 55.4363 15.8662 55.5008C15.1468 55.5652 14.4237 55.4282 13.7778 55.1049C13.1319 54.7817 12.5887 54.2851 12.209 53.6707C11.8293 53.0563 11.6281 52.3483 11.628 51.626V15.306C11.628 13.2423 12.4477 11.2631 13.9069 9.8037C15.3661 8.34432 17.3452 7.52431 19.409 7.52405H45.35C47.4137 7.52431 49.3929 8.34432 50.8521 9.8037C52.3112 11.2631 53.131 13.2423 53.131 15.306V51.625C53.1309 52.3473 52.9297 53.0553 52.55 53.6697C52.1703 54.2841 51.6271 54.7807 50.9812 55.1039C50.3353 55.4272 49.6122 55.5642 48.8928 55.4998C48.1734 55.4353 47.4862 55.1719 46.908 54.739L34.715 45.6071C34.0419 45.1031 33.2238 44.8308 32.383 44.8308C31.5422 44.8308 30.724 45.1031 30.051 45.6071V45.6071Z" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+				</svg>
+			</a>
+			<a
+				href={ templ.URL("/users/" + username) }
+				class="flex aspect-square min-h-[32px] w-12 flex-col items-center justify-center gap-1 rounded-md p-1.5 stroke-black"
+			>
+				<img class={ "w-6 h-6 rounded-full object-cover ", templ.KV("border-2 border-black", isActive(title, "| User")) } src={ fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media&token=public", os.Getenv("BUCKET_NAME"), url.PathEscape("profile_images/"+username)) }/>
+			</a>
+		</div>
+		<div>
+			<button
+				hx-post="/logout"
+				hx-target="body"
+				hx-push-url="true"
+				class="flex aspect-square min-h-[32px] bg-slate-100  w-12 flex-col items-center justify-center gap-1 rounded-md p-1.5"
+			>
+				<svg stroke="black" class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M15 12L2 12M2 12L5.5 9M2 12L5.5 15" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+					<path d="M9.00195 7C9.01406 4.82497 9.11051 3.64706 9.87889 2.87868C10.7576 2 12.1718 2 15.0002 2L16.0002 2C18.8286 2 20.2429 2 21.1215 2.87868C22.0002 3.75736 22.0002 5.17157 22.0002 8L22.0002 16C22.0002 18.8284 22.0002 20.2426 21.1215 21.1213C20.3531 21.8897 19.1752 21.9862 17 21.9983M9.00195 17C9.01406 19.175 9.11051 20.3529 9.87889 21.1213C10.5202 21.7626 11.4467 21.9359 13 21.9827" stroke-width="1.5" stroke-linecap="round"></path>
+				</svg>
+			</button>
+		</div>
+	</nav>
+}

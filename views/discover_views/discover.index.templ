@@ -1,0 +1,18 @@
+package discover_views
+
+import (
+	"momez/views/layout"
+)
+
+templ DiscoverIndex(
+	title,
+	username string,
+	fromProtected bool,
+	isError bool,
+	errMsgs, sucMsgs []string,
+	cmp templ.Component,
+) {
+	@layout.Base(title, username, fromProtected, isError, errMsgs, sucMsgs) {
+		@cmp
+	}
+}

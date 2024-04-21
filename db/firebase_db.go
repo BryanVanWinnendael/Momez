@@ -542,6 +542,17 @@ func (db *Database) GetPostsWithTag(ctx context.Context, tag string, username st
 		}
 	}
 
+	favorites, err := db.GetFavoritePosts(ctx, username)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, post := range postDtos {
+		if db.IsPostFavovited(ctx, post.ID, username, favorites) {
+			post.FAVORITED = true
+		}
+	}
+
 	sort.Slice(postDtos, func(i, j int) bool {
 		time1, _ := time.Parse(time.RFC3339, postDtos[i].CreatedAt)
 		time2, _ := time.Parse(time.RFC3339, postDtos[j].CreatedAt)

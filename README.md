@@ -16,11 +16,14 @@
 - Setup A Realtime Database
 - Setup Storage
 
-In firebase Realtime Database > Rules, add the rule:
+In firebase Realtime Database > Rules, add the rules:
 ```json
 "posts": {
     ".indexOn": ["id", "username"]
-  }
+  },
+  "tags": {
+        ".indexOn": ["username"]
+      }
 ```
 
 ### Firebase serviceAccountKey

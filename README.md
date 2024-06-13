@@ -47,7 +47,7 @@ For the SECRET_KEY any value will do. This value will be used by the cookieStore
 ### Requirements
 - [Docker](https://docs.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
-
+- [templ](https://templ.guide/quick-start/installation)
 ### Run it
 ```
 docker compose up -d
